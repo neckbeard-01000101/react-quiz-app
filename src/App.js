@@ -77,15 +77,18 @@ export default function App() {
         },
         dispatch,
     ] = useReducer(reducer, initialState);
-
+    console.log(questions);
     const maxPoints = questions.reduce((acc, cur) => acc + cur.points, 0);
     useEffect(() => {
         async function getData() {
             try {
-                const res = await fetch("http://localhost:8000/questions");
+                const res = await fetch("/questions.json");
                 const data = await res.json();
-                console.log(data);
-                dispatch({ type: "dataReceived", payload: data });
+                console.log(data.record);
+                dispatch({
+                    type: "dataReceived",
+                    payload: data.questions,
+                });
             } catch (err) {
                 console.log(err);
                 dispatch({ type: "dataFailed" });
